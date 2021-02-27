@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>15</title>
+        <style>
+            canvas {
+                outline: 1px dashed lightskyblue;
+                /*position: relative;*/
+                margin: 40px auto;
+            }
+        </style>
+        <!-- 引入所有用到的文件 -->
+        <script src="axe3dData.js"></script>
+
+        <!-- 一些常用函数 -->
+        <script src='utils.js'></script>
+        
+<!-- 把new关键字用.new代替, 仅此而已 -->
+        <script src='gua_object.js'></script>
+        
+        <!-- 三维的点的类, 三维向量对象 -->
+        <script src='vector.js'></script>
+
+        <!-- 颜色的类 -->
+        <script src='color.js'></script>
+
+        <!-- 顶点的类, 包括一个坐标vector 和 一个颜色 -->
+        <script src='vertex.js'></script>
+
+        <!-- 三维坐标转二位坐标的计算 -->
+        <script src='matrix.js'></script>
+
+        <!-- 表示一个三维的物体的类, 有多个顶点, 顶点连成线, 线组成面, 面再刷上颜色 -->
+        <script src='axemesh.js'></script>
+
+        <!-- canvas相关, 把计算的坐标画图 -->
+        <script src='canvas.js'></script>
+
+        <script src='test.js'></script>
+
+    </head>
+    <body>
+        <canvas id="id-canvas" width="1000" height="750"></canvas>
+
+        <div>
+            <h3>控制区</h3>
+            <button id="pause">转动</button>
+            <button id="showLine">边框线</button>
+           <div>
+                <h3>缩放比例:</h3>
+                    <input id="range" type="range" value="1" max=2 step=0.1>
+                 (x)<input id="rangeX" type="range" value="1" max=2 step=0.1 >
+                 (y)<input id="rangeY" type="range" value="1" max=2 step=0.1 >
+                 (z)<input id="rangeZ" type="range" value="1" max=2 step=0.1 >
+           </div>
+           <div>
+                <h3>偏移量:</h3>
+                    <input id="position" type="number" value="0" >    </br>
+                 (x) <input id="positionX" type="number" value="0" >  </br>
+                 (y) <input id="positionY" type="number" value="0" >  </br>
+                 (z) <input id="positionZ" type="number" value="0" >  </br>
+           </div>
+
+        </div>
+<script>
+
+
+/*要问的问题
+1. utils.interpolate 计算插值的函数
+
+
+ */
+
+
+
+
+// 函数名应该用 const 修饰, 这样不会被意外修改
+const __main = function() {
+
+
+
+
+    let canvas = GuaCanvas.new('#id-canvas')
+
+
+    // 直接输出的GuaMesh里的立方体
+    let mesh = GuaMesh.cube()
+    canvas.drawMesh(mesh)
+
+    // 数据里的四方体 getCones
+    // let meshAxe3d = Axe3dData.getCones();
+
+    // 数据里的立方体 getCube
+    // let meshAxe3d = Axe3dData.getCube();
+
+    // 数据里的伊利丹
+    // let meshAxe3d = Axe3dData.getIllidan();
+
+    // let mesh = GuaMesh.fromGua3D(meshAxe3d)
+    //  canvas.drawMesh(mesh)
+
+    //
+    canvas.render()
+
+    // 测试.
+    canvas.testCanvas()
+
+    setInterval(function() {
+
+        //是否暂停了
+        if (!pause) {
+
+            canvas.clear()
+            // mesh.rotation.x += 0.1
+            mesh.changeRotation(0, 0.1, 0 )
+
+            canvas.drawMesh(mesh)
+            //
+            canvas.render()
+        }
+
+    }, 200)
+
+    //  let meshAxe3d = Axe3dData.getAxe3dChest(); // 3d箱子三维模型数据.
+    // let axe3dImage = Axe3dData.getChestAxeImage();   // 箱子的贴图数据.
+    // let mesh = GuaMesh.fromAxe3DImage(meshAxe3d, axe3dImage)
+    //  canvas.drawMesh(mesh)
+
+    // //
+    // canvas.render()
+
+    // // 测试.
+    // // canvas.testCanvas()
+
+    // setInterval(function() {
+
+    //     //是否暂停了
+    //     if (!pause) {
+
+    //         canvas.clear()
+    //         // mesh.rotation.x += 0.1
+    //         mesh.changeRotation(0, 0.1, 0 )
+
+    //         canvas.drawMesh(mesh)
+    //         //
+    //         canvas.render()
+    //     }
+
+    // }, 200)
+
+
+    //fromAxe3DImage
+
+
+    // 暂停功能
+    var pauseBtn = _e("#pause")
+
+    var pause = false
+    pauseBtn.onclick = function() {
+        pause = !pause
+    }
+   
+    _e("#showLine").onclick = function() {
+        mesh.showLine = !mesh.showLine
+    }
+   
+
+    // 缩放
+     _e("#range").onclick = function(e) {
+        var val = e.target.value
+        canvas.setScale(val, val, val)
+    }
+      _e("#rangeX").onclick = function(e) {
+        var val = e.target.value
+        canvas.setScale(val, 1, 1)
+    }
+      _e("#rangeY").onclick = function(e) {
+        var val = e.target.value
+        canvas.setScale(1, val, 1)
+    }
+      _e("#rangeZ").onclick = function(e) {
+        var val = e.target.value
+        canvas.setScale(1, 1, val)
+    }
+
+    let cube3d = Axe3dData.getCones()
+    GuaMesh.fromGua3D(cube3d)
+
+    // 位移
+  _e("#position").onclick = function(e) {
+        var val = e.target.value
+        mesh.setPosition({x: val, y: val, z: val})
+    }
+      _e("#positionX").onclick = function(e) {
+        var val = e.target.value
+        mesh.setPosition({x: val})
+    }
+      _e("#positionY").onclick = function(e) {
+        var val = e.target.value
+        mesh.setPosition({y: val})
+    }
+      _e("#positionZ").onclick = function(e) {
+        var val = e.target.value
+        mesh.setPosition({z: val})
+    }
+
+
+
+  
+}
+
+__main()
+</script>
+    </body>
+</html>

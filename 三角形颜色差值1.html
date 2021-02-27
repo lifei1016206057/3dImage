@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>15</title>
+        <style>
+            canvas {
+                outline: 1px dashed lightskyblue;
+                /*position: relative;*/
+                margin: 40px auto;
+            }
+        </style>
+        <!-- 引入所有用到的文件 -->
+        <script src="axe3dData.js"></script>
+
+        <!-- 一些常用函数 -->
+        <script src='utils.js'></script>
+        
+<!-- 把new关键字用.new代替, 仅此而已 -->
+        <script src='gua_object.js'></script>
+        
+        <!-- 三维的点的类, 三维向量对象 -->
+        <script src='vector.js'></script>
+
+        <!-- 颜色的类 -->
+        <script src='color.js'></script>
+
+        <!-- 顶点的类, 包括一个坐标vector 和 一个颜色 -->
+        <script src='vertex.js'></script>
+
+        <!-- 三维坐标转二位坐标的计算 -->
+        <script src='matrix.js'></script>
+
+        <!-- 表示一个三维的物体的类, 有多个顶点, 顶点连成线, 线组成面, 面再刷上颜色 -->
+        <script src='axemesh.js'></script>
+
+        <!-- canvas相关, 把计算的坐标画图 -->
+        <script src='canvas.js'></script>
+
+        <script src='test.js'></script>
+
+    </head>
+    <body>
+        <canvas id="id-canvas" width="1000" height="750"></canvas>
+
+     
+<script>
+
+
+/*要问的问题
+1. utils.interpolate 计算插值的函数
+
+
+ */
+
+
+
+
+// 函数名应该用 const 修饰, 这样不会被意外修改
+const __main = function() {
+
+   
+
+
+    let canvas = GuaCanvas.new('#id-canvas')
+    let v1 = GuaVertex.new(GuaVector.new(500, 350), GuaColor.red())
+    let v2 = GuaVertex.new(GuaVector.new(400, 550), GuaColor.blue())
+    let v3 = GuaVertex.new(GuaVector.new(600, 550), GuaColor.green())
+    // canvas.drawScanline(v1, v2)
+    canvas.drawTriangle(v1, v2, v3)
+
+    canvas.render()
+
+ 
+
+  
+}
+
+__main()
+</script>
+    </body>
+</html>
